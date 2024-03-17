@@ -28,7 +28,7 @@ int main()
         for (long idxEntrada = 0; idxEntrada < n; ++idxEntrada)
         {
             Ponto& regPonto = aPontos[idxEntrada];
-            scanf("%hd %hd", &regPonto.x, &regPonto.y);
+            scanf("%d %d", &regPonto.x, &regPonto.y);
         }
 
         bool bTemPontoCritico = false;
