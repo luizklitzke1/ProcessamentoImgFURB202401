@@ -14,7 +14,7 @@ struct Ponto
 
 Ponto aPontos[MAX_N];
 
-//Zero = Colineares | Positivo = Curva pra Esquera | Negativo = Curva pra direita
+//Zero = Colineares | Positivo = Curva pra Esquerda | Negativo = Curva pra direita
 long CalculaProdutoVetorial(const Ponto& p1, const Ponto& p2, const Ponto& p3)
 {
     return (p2.x - p1.x) * (p3.y - p1.y) - 
