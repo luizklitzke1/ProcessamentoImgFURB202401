@@ -1,16 +1,21 @@
+//Aluno: Luiz Gustavo Klitzke
+
 #include <stdio.h>
 
-short n, x, y;
+#define MAX_N 50
 
-struct Point
+long n, x, y;
+
+struct Ponto
 {
-    short x;
-    short y;
+    long x = 0;
+    long y = 0;
 };
 
-Point points[50];
+Ponto aPontos[MAX_N];
 
-char GetCrossProduct(const Point& p1, const Point& p2, const Point& p3)
+//Zero = Colineares | Positivo = Curva pra Esquera | Negativo = Curva pra direita
+long CalculaProdutoVetorial(const Ponto& p1, const Ponto& p2, const Ponto& p3)
 {
     return (p2.x - p1.x) * (p3.y - p1.y) - 
            (p2.y - p1.y) * (p3.x - p1.x);
@@ -20,38 +25,32 @@ int main()
 {
     while (scanf("%d", &n) && n)
     {
-        for (short i = 0; i < n; ++i)
+        for (long idxEntrada = 0; idxEntrada < n; ++idxEntrada)
         {
-            Point& point = points[i];
-            scanf("%hd %hd", &point.x, &point.y);
+            Ponto& regPonto = aPontos[idxEntrada];
+            scanf("%hd %hd", &regPonto.x, &regPonto.y);
         }
 
-        bool convex = true;
-        char previousProduct = 0;
+        bool bTemPontoCritico = false;
+        const long lPrimeiroProdutoVetorial = CalculaProdutoVetorial(aPontos[0], aPontos[1], aPontos[2]);
 
-        for (short i = 0; i < n; ++i)
+        for (long idxPonto = 1; idxPonto < n; ++idxPonto)
         {
-            const Point& p1 = points[i];
-            const Point& p2 = points[(i + 1) % n];
-            const Point& p3 = points[(i + 2) % n];
+            const Ponto& p1 = aPontos[idxPonto];
+            const Ponto& p2 = aPontos[(idxPonto + 1) % n];
+            const Ponto& p3 = aPontos[(idxPonto + 2) % n];
 
-            const char product = GetCrossProduct(p1, p2, p3);
+            const long lProduto = CalculaProdutoVetorial(p1, p2, p3);
 
-            if (i == 0) // primeira passada
+            if (lPrimeiroProdutoVetorial >= 0 && lProduto < 0 ||
+                lPrimeiroProdutoVetorial < 0  && lProduto > 0)
             {
-                previousProduct = product;
-                continue;
-            }
-
-            //Muda de direção?
-            if (previousProduct >= 0 && product < 0 || previousProduct < 0 && product > 0)
-            {
-                convex = false;
+                bTemPontoCritico = true;
                 break;
             }
         }
 
-        if (convex)
+        if (bTemPontoCritico)
             puts("Yes");
         else
             puts("No");
